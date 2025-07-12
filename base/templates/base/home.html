@@ -1,0 +1,140 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #0e0e0e;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .home-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 30px;
+    padding: 30px;
+  }
+
+  a {
+    color: #8fd3ff;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .question-card {
+    background-color: #1a1a1a;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    position: relative;
+  }
+
+  .question-card h5 {
+    color: #fff;
+    margin: 0 0 10px;
+  }
+
+  .question-card p {
+    color: #ccc;
+  }
+
+  .tags {
+    display: inline-block;
+    background-color: #333;
+    color: #ccc;
+    padding: 2px 6px;
+    margin-right: 5px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  .answer-bubble {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #222;
+    border: 2px solid #aaa;
+    border-radius: 10px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .pagination a {
+    color: #ccc;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+
+  .pagination a:hover {
+    background-color: #333;
+  }
+
+  .active-page {
+    font-weight: bold;
+    color: #fff;
+    border-bottom: 2px solid #fff;
+  }
+
+  @media (max-width: 768px) {
+    .home-container {
+      grid-template-columns: 1fr;
+      padding: 15px;
+    }
+  }
+</style>
+
+<div class="home-container">
+  <div>
+    <h3>Explore Tags</h3>
+    <hr>
+    <div><a href="{% url 'home' %}">All</a></div>
+    {% for topic in topics %}
+    <div><a href="{% url 'home' %}?q={{ topic.name }}">{{ topic.name }}</a></div>
+    {% endfor %}
+  </div>
+
+  <div>
+    <h5>{{ room_count }} Questions Asked on StackIt</h5>
+    <a href="{% url 'create-room' %}">+ Ask a Question</a>
+
+    <div>
+      {% for room in rooms %}
+      <div class="question-card">
+        {% if request.user == room.host %}
+        <a href="{% url 'update-room' room.id %}">Edit</a>
+        <a href="{% url 'delete-room' room.id %}">Delete</a>
+        {% endif %}
+        <span>@{{ room.host.username }}</span>
+        <h5><a href="{% url 'room' room.id %}">{{ room.name }}</a></h5>
+        <small>Tag: {{ room.topic.name }}</small>
+        <hr>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+<script>
+    function toggleFilters() {
+        const filterBox = document.getElementById('mobile-filters');
+        filterBox.classList.toggle('show');
+    }
+</script>
+
+
+{% endblock %}

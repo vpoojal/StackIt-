@@ -1,0 +1,113 @@
+<style>
+  .navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111;
+    padding: 10px 20px;
+    color: white;
+  }
+
+  .navbar-logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #8fd3ff;
+    text-decoration: none;
+  }
+
+  .navbar-form {
+    flex-grow: 1;
+    max-width: 400px;
+    margin: 10px;
+  }
+
+  .navbar-form input {
+    width: 100%;
+    padding: 6px;
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: white;
+  }
+
+  .navbar-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .navbar-buttons a,
+  .navbar-buttons form button {
+    background-color: transparent;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .navbar-buttons a:hover,
+  .navbar-buttons form button:hover {
+    background-color: #222;
+  }
+
+  .notification-icon {
+    font-size: 18px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .notification-icon::after {
+    content: "3"; /* placeholder count */
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    border-radius: 50%;
+    padding: 2px 5px;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .navbar-form {
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .navbar-buttons {
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="navbar">
+  <a class="navbar-logo" href="/">StackIt</a>
+
+  <form class="navbar-form" method="GET" action="{% url 'home' %}">
+    <input type="text" name="q" placeholder="Search questions, tags...">
+  </form>
+
+  <div class="navbar-buttons">
+    
+
+    {% if request.user.is_authenticated %}
+      <span>Hello {{ request.user }}</span>
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,61 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+  .delete-container {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    text-align: center;
+    color: #e0e0e0;
+  }
+
+  .delete-container p {
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #ccc;
+  }
+
+  .delete-container a {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #333;
+    border-radius: 6px;
+    color: #8fd3ff;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+
+  .delete-container a:hover {
+    background-color: #444;
+  }
+
+  .delete-container input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+
+  .delete-container input[type="submit"]:hover {
+    background-color: #e63946;
+  }
+</style>
+
+<div class="delete-container">
+  <form method="POST" action="">
+    {% csrf_token %}
+    <p>Are you sure you want to delete <strong>"{{ obj }}"</strong>?</p>
+    <a href="{{ request.META.HTTP_REFERER }}">Cancel</a>
+    <input type="submit" value="Confirm" />
+  </form>
+</div>
+{% endblock %}
